@@ -541,172 +541,61 @@
                     "nct_id": {
                         "type": "string",
                         "title": "Nct Id",
-                        "description": "The NCT ID / ClinicalTrials.gov identifier of the trial"
-                    },
-                    "phase": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Phase",
-                        "description": "Phase of the clinical trial",
-                        "nullable": true
-                    },
-                    "org_study_id": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Org Study Id",
-                        "description": "Organization's unique study identifier",
-                        "nullable": true
-                    },
-                    "status": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Status",
-                        "description": "Current recruitment status",
-                        "nullable": true
-                    },
-                    "condition": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Condition",
-                        "description": "Conditions under study",
-                        "nullable": true
-                    },
-                    "completion_date": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Completion Date",
-                        "description": "Primary completion date",
-                        "nullable": true
-                    },
-                    "enrollment_count": {
-                        "anyOf": [
-                            {
-                                "type": "integer"
-                            }
-                        ],
-                        "title": "Enrollment Count",
-                        "description": "Number of participants enrolled",
-                        "nullable": true
-                    },
-                    "study_type": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Study Type",
-                        "description": "Type of study",
-                        "nullable": true
-                    },
-                    "arm": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Arm",
-                        "description": "Study arm label",
-                        "nullable": true
-                    },
-                    "drug": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Drug",
-                        "description": "Intervention name",
-                        "nullable": true
-                    },
-                    "study_population": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Study Population",
-                        "description": "Description of study population",
-                        "nullable": true
-                    },
-                    "sponsor": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Sponsor",
-                        "description": "Lead sponsor name",
-                        "nullable": true
-                    },
-                    "collaborator": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Collaborator",
-                        "description": "Study collaborators",
-                        "nullable": true
-                    },
-                    "start_date": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Start Date",
-                        "description": "Study start date",
-                        "nullable": true
-                    },
-                    "primary_measure": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Primary Measure",
-                        "description": "Primary outcome measure",
-                        "nullable": true
-                    },
-                    "purpose": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
-                        "title": "Purpose",
-                        "description": "Primary purpose of the study",
-                        "nullable": true
+                        "description": "The NCT ID of the trial"
                     },
                     "brief_title": {
-                        "anyOf": [
-                            {
-                                "type": "string"
-                            }
-                        ],
+                        "type": "string",
                         "title": "Brief Title",
-                        "description": "Brief title of the study",
-                        "nullable": true
+                        "description": "Brief title of the clinical trial"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "Trial URL",
+                        "description": "URL to the trial details on ClinicalTrials.gov"
+                    },
+                    "status": {
+                        "type": "string",
+                        "title": "Status",
+                        "description": "Current status of the trial"
+                    },
+                    "phase": {
+                        "type": "string",
+                        "title": "Phase",
+                        "description": "Phase of the clinical trial"
+                    },
+                    "conditions": {
+                        "type": "array",
+                        "title": "Conditions",
+                        "description": "Conditions being studied",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "sponsor": {
+                        "type": "string",
+                        "title": "Sponsor",
+                        "description": "Lead sponsor of the trial"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "title": "Start Date",
+                        "description": "Start date of the trial"
+                    },
+                    "completion_date": {
+                        "type": "string",
+                        "title": "Completion Date",
+                        "description": "Expected completion date of the trial"
                     }
                 },
                 "type": "object",
                 "required": [
-                    "nct_id"
+                    "nct_id",
+                    "brief_title",
+                    "url",
+                    "status",
+                    "phase",
+                    "conditions",
+                    "sponsor"
                 ],
                 "title": "ClinicalTrial"
             },
@@ -882,24 +771,30 @@
                 "title": "LocationContact"
             },
             "MinimalClinicalTrial": {
+                "title": "MinimalClinicalTrial",
+                "type": "object",
                 "properties": {
                     "nct_id": {
                         "type": "string",
                         "title": "Nct Id",
-                        "description": "The NCT ID / ClinicalTrials.gov identifier of the trial"
+                        "description": "The NCT ID of the trial"
                     },
                     "brief_title": {
                         "type": "string",
                         "title": "Brief Title",
-                        "description": "Brief title of the study"
+                        "description": "Brief title of the clinical trial"
+                    },
+                    "url": {
+                        "type": "string",
+                        "title": "Trial URL",
+                        "description": "URL to the trial details on ClinicalTrials.gov"
                     }
                 },
-                "type": "object",
                 "required": [
                     "nct_id",
-                    "brief_title"
-                ],
-                "title": "MinimalClinicalTrial"
+                    "brief_title",
+                    "url"
+                ]
             },
             "NearbyTrial": {
                 "properties": {

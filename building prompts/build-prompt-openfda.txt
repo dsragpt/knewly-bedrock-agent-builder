@@ -1,0 +1,3 @@
+When using the OpenFDA API, always check the knowledge base first for product summaries and guidances.
+Include knowledge base information alongside API results, clearly indicating the source of each piece of information.
+Example: "From Knowledge Base: [summary] | From API: [details]"

@@ -62,7 +62,12 @@ knewly-bedrock-agent-builder/
    pip install -r requirements.txt
    ```
 
-4. Configure your agents:
+4. Lambda Layer Dependencies:
+   - The clinical actions require the `requests` library as a Lambda layer
+   - The layer is available at `agent-builder/action/clinical/requests-layer.zip`
+   - When deploying the clinical Lambda function, add this as a layer
+
+5. Configure your agents:
    - Copy `config/agents.json.example` to `config/agents.json`
    - Update the configuration with your agent IDs and alias IDs
 

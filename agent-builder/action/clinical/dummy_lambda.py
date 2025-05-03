@@ -107,9 +107,11 @@ def search_trials(
     
     trials = []
     for study in data.get("studies", []):
+        nct_id = get_nested_value(study, ["protocolSection", "identificationModule", "nctId"])
         trial = {
-            "nct_id": get_nested_value(study, ["protocolSection", "identificationModule", "nctId"]),
-            "brief_title": get_nested_value(study, ["protocolSection", "identificationModule", "briefTitle"])
+            "nct_id": nct_id,
+            "brief_title": get_nested_value(study, ["protocolSection", "identificationModule", "briefTitle"]),
+            "url": f"https://clinicaltrials.gov/study/{nct_id}"
         }
         trials.append(trial)
     
@@ -142,6 +144,7 @@ def get_trial_details(nct_id: str) -> Dict:
     return {
         "nct_id": get_nested_value(study, ["protocolSection", "identificationModule", "nctId"]),
         "brief_title": get_nested_value(study, ["protocolSection", "identificationModule", "briefTitle"]),
+        "url": f"https://clinicaltrials.gov/study/{nct_id}",
         "status": get_nested_value(study, ["protocolSection", "statusModule", "overallStatus"]),
         "phase": get_first_item(study, ["protocolSection", "designModule", "phases"]),
         "conditions": get_nested_value(study, ["protocolSection", "conditionsModule", "conditions"], []),
