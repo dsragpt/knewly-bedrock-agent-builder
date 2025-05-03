@@ -1,0 +1,42 @@
+[
+    {
+        "name": "Basic SERP Search",
+        "input": "Search for the latest news about artificial intelligence",
+        "description": "Test basic SERP search functionality"
+    },
+    {
+        "name": "SERP Search with Metadata",
+        "input": "Search for recent developments in quantum computing and include source URLs and titles",
+        "description": "Test SERP search with metadata enabled"
+    },
+    {
+        "name": "SERP Search with Consolidated Results",
+        "input": "Search for information about climate change and provide a consolidated summary with references",
+        "description": "Test SERP search with consolidated results"
+    },
+    {
+        "name": "Tavily Search",
+        "input": "Use Tavily to search for information about machine learning frameworks",
+        "description": "Test basic Tavily search functionality"
+    },
+    {
+        "name": "Tavily Search with Metadata",
+        "input": "Use Tavily to search for information about blockchain technology and include source URLs and relevance scores",
+        "description": "Test Tavily search with metadata enabled"
+    },
+    {
+        "name": "Tavily Search with Consolidated Results",
+        "input": "Use Tavily to search for information about renewable energy and provide a consolidated summary with references",
+        "description": "Test Tavily search with consolidated results"
+    },
+    {
+        "name": "Targeted Website Search",
+        "input": "Search for information about Python programming on python.org",
+        "description": "Test search with a specific target website"
+    },
+    {
+        "name": "Complex Search Query",
+        "input": "Search for recent research papers about neural networks and deep learning published in the last year",
+        "description": "Test complex search query with multiple parameters"
+    }
+] 
