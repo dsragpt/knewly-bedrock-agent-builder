@@ -1,0 +1,89 @@
+{
+  "categories": [
+    {
+      "name": "Basic Trial Information",
+      "test_cases": [
+        {
+          "id": "BTI-001",
+          "question": "What clinical trials are currently recruiting for breast cancer?",
+          "expected_elements": [
+            "recruiting status",
+            "breast cancer",
+            "trial identifiers",
+            "brief summary"
+          ]
+        },
+        {
+          "id": "BTI-002",
+          "question": "Show me all phase 3 trials for diabetes in the United States",
+          "expected_elements": [
+            "phase 3",
+            "diabetes",
+            "United States",
+            "trial identifiers"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Specific Trial Details",
+      "test_cases": [
+        {
+          "id": "STD-001",
+          "question": "What are the eligibility criteria for trial NCT12345678?",
+          "expected_elements": [
+            "inclusion criteria",
+            "exclusion criteria",
+            "age requirements",
+            "health status requirements"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Location and Site-based",
+      "test_cases": [
+        {
+          "id": "LSB-001",
+          "question": "Find clinical trials for lung cancer within 50 miles of New York City",
+          "expected_elements": [
+            "lung cancer",
+            "New York City",
+            "distance filter",
+            "site locations"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Demographic and Population",
+      "test_cases": [
+        {
+          "id": "DP-001",
+          "question": "Find clinical trials for children with asthma",
+          "expected_elements": [
+            "pediatric",
+            "asthma",
+            "age range",
+            "inclusion criteria"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Treatment and Intervention",
+      "test_cases": [
+        {
+          "id": "TI-001",
+          "question": "What trials are testing new immunotherapy treatments for melanoma?",
+          "expected_elements": [
+            "immunotherapy",
+            "melanoma",
+            "treatment type",
+            "intervention details"
+          ]
+        }
+      ]
+    }
+  ]
+} 

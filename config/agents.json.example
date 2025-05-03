@@ -1,0 +1,18 @@
+{
+    "clinical_trials": {
+        "agent_id": "YOUR_CLINICAL_TRIALS_AGENT_ID",
+        "agent_alias_id": "YOUR_CLINICAL_TRIALS_AGENT_ALIAS_ID",
+        "region": "us-east-1",
+        "name": "Clinical Trials Agent",
+        "description": "Agent for querying ClinicalTrials.gov API",
+        "version": "1.0.0"
+    },
+    "openfda": {
+        "agent_id": "YOUR_OPENFDA_AGENT_ID",
+        "agent_alias_id": "YOUR_OPENFDA_AGENT_ALIAS_ID",
+        "region": "us-east-1",
+        "name": "OpenFDA API Agent",
+        "description": "Agent for querying OpenFDA API endpoints",
+        "version": "1.0.0"
+    }
+} 

@@ -1,0 +1,274 @@
+{
+  "categories": [
+    {
+      "name": "Drug Adverse Events",
+      "test_cases": [
+        {
+          "id": "DAE-001",
+          "question": "What are the most common adverse events reported for ibuprofen?",
+          "expected_elements": [
+            "drug name",
+            "adverse events",
+            "frequency",
+            "severity"
+          ]
+        },
+        {
+          "id": "DAE-002",
+          "question": "Show me adverse events reported for COVID-19 vaccines",
+          "expected_elements": [
+            "vaccine type",
+            "adverse events",
+            "reporting dates",
+            "patient demographics"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Drug Labeling",
+      "test_cases": [
+        {
+          "id": "DL-001",
+          "question": "What are the warnings and precautions for Lipitor?",
+          "expected_elements": [
+            "drug name",
+            "warnings",
+            "precautions",
+            "contraindications"
+          ]
+        },
+        {
+          "id": "DL-002",
+          "question": "Show me the dosage information for Advil",
+          "expected_elements": [
+            "drug name",
+            "dosage forms",
+            "recommended doses",
+            "administration instructions"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Device Recalls",
+      "test_cases": [
+        {
+          "id": "DR-001",
+          "question": "What medical devices were recalled in the last 6 months?",
+          "expected_elements": [
+            "device names",
+            "recall dates",
+            "recall reasons",
+            "affected lots"
+          ]
+        },
+        {
+          "id": "DR-002",
+          "question": "Show me recalls for pacemakers",
+          "expected_elements": [
+            "device type",
+            "manufacturer",
+            "recall dates",
+            "recall reasons"
+          ]
+        },
+        {
+          "id": "DR-003",
+          "question": "How many devices does Medtronic have in FDA databases?",
+          "expected_elements": [
+            "manufacturer name",
+            "device count",
+            "device categories",
+            "device types"
+          ]
+        },
+        {
+          "id": "DR-004",
+          "question": "What types of cardiovascular devices does Boston Scientific manufacture?",
+          "expected_elements": [
+            "manufacturer name",
+            "device categories",
+            "specific device types",
+            "approval dates"
+          ]
+        },
+        {
+          "id": "DR-005",
+          "question": "Show me all orthopedic devices manufactured by Stryker",
+          "expected_elements": [
+            "manufacturer name",
+            "device categories",
+            "device names",
+            "approval status"
+          ]
+        },
+        {
+          "id": "DR-006",
+          "question": "What are the most recent devices approved for Johnson & Johnson?",
+          "expected_elements": [
+            "manufacturer name",
+            "device names",
+            "approval dates",
+            "device categories"
+          ]
+        },
+        {
+          "id": "DR-007",
+          "question": "Compare the number of devices between Abbott and Medtronic in the cardiovascular category",
+          "expected_elements": [
+            "manufacturer names",
+            "device counts",
+            "device categories",
+            "comparison data"
+          ]
+        },
+        {
+          "id": "DR-008",
+          "question": "What are the most common device types manufactured by Philips Healthcare?",
+          "expected_elements": [
+            "manufacturer name",
+            "device categories",
+            "device counts",
+            "market segments"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Device Adverse Events",
+      "test_cases": [
+        {
+          "id": "DAE-001",
+          "question": "What adverse events were reported for insulin pumps?",
+          "expected_elements": [
+            "device type",
+            "adverse events",
+            "severity",
+            "patient outcomes"
+          ]
+        },
+        {
+          "id": "DAE-002",
+          "question": "Show me adverse events reported for surgical mesh",
+          "expected_elements": [
+            "device type",
+            "adverse events",
+            "reporting dates",
+            "patient demographics"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Combined Drug and Device",
+      "test_cases": [
+        {
+          "id": "CDD-001",
+          "question": "Find adverse events for both the drug warfarin and pacemakers",
+          "expected_elements": [
+            "drug name",
+            "device type",
+            "adverse events",
+            "interaction information"
+          ]
+        },
+        {
+          "id": "CDD-002",
+          "question": "Show me recalls and adverse events for both blood pressure medications and blood pressure monitors",
+          "expected_elements": [
+            "drug category",
+            "device type",
+            "recalls",
+            "adverse events"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Analytical Queries",
+      "test_cases": [
+        {
+          "id": "AN-001",
+          "question": "What is the recall rate trend for cardiovascular devices over the past 5 years?",
+          "expected_elements": [
+            "time period",
+            "recall counts",
+            "trend analysis",
+            "year-over-year comparison"
+          ]
+        },
+        {
+          "id": "AN-002",
+          "question": "Compare the approval timelines for different types of orthopedic devices",
+          "expected_elements": [
+            "device types",
+            "approval durations",
+            "comparison metrics",
+            "statistical analysis"
+          ]
+        },
+        {
+          "id": "AN-003",
+          "question": "What is the average time between device approval and first recall by manufacturer?",
+          "expected_elements": [
+            "manufacturer names",
+            "time periods",
+            "statistical averages",
+            "comparison data"
+          ]
+        },
+        {
+          "id": "AN-004",
+          "question": "Show me the trend in adverse event reporting for insulin pumps over the last decade",
+          "expected_elements": [
+            "time period",
+            "event counts",
+            "trend analysis",
+            "year-over-year changes"
+          ]
+        },
+        {
+          "id": "AN-005",
+          "question": "What is the correlation between device complexity and recall rates?",
+          "expected_elements": [
+            "device categories",
+            "complexity metrics",
+            "recall rates",
+            "correlation analysis"
+          ]
+        },
+        {
+          "id": "AN-006",
+          "question": "Compare the approval success rates for different device categories",
+          "expected_elements": [
+            "device categories",
+            "approval rates",
+            "rejection rates",
+            "comparison metrics"
+          ]
+        },
+        {
+          "id": "AN-007",
+          "question": "What is the average time to market for new medical devices by category?",
+          "expected_elements": [
+            "device categories",
+            "time metrics",
+            "statistical analysis",
+            "comparison data"
+          ]
+        },
+        {
+          "id": "AN-008",
+          "question": "Show me the trend in device innovation by manufacturer over the past 10 years",
+          "expected_elements": [
+            "manufacturer names",
+            "innovation metrics",
+            "time series data",
+            "trend analysis"
+          ]
+        }
+      ]
+    }
+  ]
+} 
