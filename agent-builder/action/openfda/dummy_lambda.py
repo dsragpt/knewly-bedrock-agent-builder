@@ -205,188 +205,98 @@ def extract_parameters(parameters):
     
     return search, limit, skip
 
-def handle_endpoint(endpoint_path, parameters, endpoint_type=None):
-    """
-    Handle requests for any OpenFDA endpoint
-    
-    Args:
-        endpoint_path: The path to the endpoint (e.g., /drug/event.json)
-        parameters: List of parameters from the Bedrock agent
-        endpoint_type: Type of endpoint for specialized handling
+def get_kb_s3_url(product_id: str) -> str:
+    """Generate S3 URL for knowledge base content"""
+    # Replace with your actual S3 bucket and prefix
+    bucket = "your-kb-bucket"
+    prefix = "product-summaries"
+    return f"https://{bucket}.s3.amazonaws.com/{prefix}/{product_id}.json"
+
+def add_kb_metadata(response_data: dict) -> dict:
+    """Add knowledge base metadata to response data"""
+    if not isinstance(response_data, dict):
+        return response_data
         
-    Returns:
-        Formatted response
-    """
-    try:
-        # Extract parameters
-        search, limit, skip = extract_parameters(parameters)
-        
-        # Build request params
-        params = {}
-        if search:
-            params["search"] = search
-        params["limit"] = limit
-        if skip > 0:
-            params["skip"] = skip
-        
-        # Make request to OpenFDA API
-        url = build_url(endpoint_path, params)
-        response = make_request(url)
-        
-        # Limit response size
-        limited_response = limit_response_size(response, max_results=3, endpoint_type=endpoint_type)
-        
-        # Convert to JSON string
-        response_json = json.dumps(limited_response)
-        
-        # Check if still too large and further limit if needed
-        if len(response_json) > MAX_RESPONSE_SIZE:
-            # Try more aggressive limiting
-            limited_response = limit_response_size(response, max_results=1, endpoint_type=endpoint_type)
-            response_json = json.dumps(limited_response)
-            
-            # If still too large, return a summary instead
-            if len(response_json) > MAX_RESPONSE_SIZE:
-                summary = {
-                    "meta": response.get("meta", {}),
-                    "summary": f"Found {len(response.get('results', []))} results for the query. Response was too large to return in full."
+    # Add metadata for each result
+    if "results" in response_data:
+        for result in response_data["results"]:
+            # Check if this result has knowledge base content
+            if "product_id" in result:
+                result["kb_metadata"] = {
+                    "url": get_kb_s3_url(result["product_id"]),
+                    "type": "product_summary",
+                    "source": "knowledge_base"
                 }
-                response_json = json.dumps(summary)
-        
-        return {
-            "statusCode": 200,
-            "body": response_json
-        }
-    except Exception as e:
-        logger.error(f"Error in handle_endpoint: {str(e)}")
-        return {
-            "statusCode": 500,
-            "body": json.dumps({
-                "error": f"Error processing request: {str(e)}"
-            })
-        }
+    
+    return response_data
+
+def handle_endpoint(endpoint_path, parameters, endpoint_type=None):
+    """Handle different OpenFDA API endpoints"""
+    # Extract parameters
+    search, limit, skip = extract_parameters(parameters)
+    
+    # Build URL
+    url = build_url(endpoint_path, {
+        "search": search,
+        "limit": limit,
+        "skip": skip
+    })
+    
+    # Make request
+    response_data = make_request(url)
+    
+    # Limit response size
+    limited_data = limit_response_size(response_data, max_results=3, endpoint_type=endpoint_type)
+    
+    # Add knowledge base metadata
+    limited_data = add_kb_metadata(limited_data)
+    
+    return limited_data
 
 def lambda_handler(event, context):
-    """Main Lambda handler function"""
+    """AWS Lambda handler for processing Bedrock agent requests."""
     try:
-        # Log the entire event for debugging
-        logger.info(f"Event: {json.dumps(event)}")
+        logger.info(f"Received event: {json.dumps(event)}")
         
-        # Extract relevant information from event
-        action_group = event.get('actionGroup', '')
-        api_path = event.get('apiPath', '')
-        http_method = event.get('httpMethod', '')
+        action_group = event['actionGroup']
+        api_path = event['apiPath']
+        http_method = event['httpMethod']
         parameters = event.get('parameters', [])
+        message_version = event.get('messageVersion', '1.0')
         
-        # Log extracted information
-        logger.info(f"Action Group: {action_group}")
-        logger.info(f"API Path: {api_path}")
-        logger.info(f"HTTP Method: {http_method}")
-        logger.info(f"Parameters: {parameters}")
-        
-        # Map API paths to endpoint paths and types
-        endpoint_mapping = {
-            # Drug endpoints
-            "/drug/event": ("/drug/event.json", "drug_event"),
-            "/drug/label": ("/drug/label.json", None),
-            "/drug/ndc": ("/drug/ndc.json", None),
-            "/drug/enforcement": ("/drug/enforcement.json", None),
-            "/drug/drugsfda": ("/drug/drugsfda.json", None),
-            "/drug/shortages": ("/drug/shortages.json", None),
-            
-            # Device endpoints
-            "/device/event": ("/device/event.json", "device_event"),
-            "/device/classification": ("/device/classification.json", "classification"),
-            "/device/510k": ("/device/510k.json", None),
-            "/device/enforcement": ("/device/enforcement.json", None),
-            "/device/pma": ("/device/pma.json", None),
-            "/device/registrationlisting": ("/device/registrationlisting.json", None),
-            "/device/recall": ("/device/recall.json", None)
-        }
-        
-        # Handle .json suffix in API path
-        clean_api_path = api_path.replace(".json", "")
-        
-        # Process based on API path
-        if clean_api_path in endpoint_mapping:
-            endpoint_path, endpoint_type = endpoint_mapping[clean_api_path]
-            result = handle_endpoint(endpoint_path, parameters, endpoint_type)
+        # Handle different endpoints
+        if api_path.startswith('/drug'):
+            result = handle_endpoint(api_path, parameters, endpoint_type="drug")
+        elif api_path.startswith('/device'):
+            result = handle_endpoint(api_path, parameters, endpoint_type="device")
         else:
-            # List all supported endpoints
-            supported_endpoints = list(endpoint_mapping.keys())
-            result = {
-                "statusCode": 400,
-                "body": json.dumps({
-                    "error": f"Unsupported API path: {api_path}",
-                    "supported_paths": supported_endpoints
-                })
-            }
+            result = handle_endpoint(api_path, parameters)
         
-        # Extract response information
-        status_code = result.get("statusCode", 200)
-        body = result.get("body", "{}")
-        
-        # Format response for Bedrock agent
-        response = {
-            "messageVersion": "1.0",
-            "response": {
-                "actionGroup": action_group,
-                "apiPath": api_path,
-                "httpMethod": http_method,
-                "httpStatusCode": status_code,
-                "responseBody": {
-                    "application/json": {
-                        "body": body
-                    }
-                }
+        response_body = {
+            'application/json': {
+                'body': result
             }
         }
         
-        # Ensure final response is within size limits
-        response_json = json.dumps(response)
-        response_size = len(response_json.encode('utf-8'))
-        logger.info(f"Response size: {response_size} bytes")
+        action_response = {
+            'actionGroup': action_group,
+            'apiPath': api_path,
+            'httpMethod': http_method,
+            'httpStatusCode': 200,
+            'responseBody': response_body
+        }
         
-        if response_size > 25 * 1024:  # 25KB limit
-            logger.warning(f"Response size exceeds 25KB: {response_size} bytes")
-            # Create a minimal response with error message
-            minimal_response = {
-                "messageVersion": "1.0",
-                "response": {
-                    "actionGroup": action_group,
-                    "apiPath": api_path,
-                    "httpMethod": http_method,
-                    "httpStatusCode": 413,  # Request Entity Too Large
-                    "responseBody": {
-                        "application/json": {
-                            "body": json.dumps({
-                                "error": "Response exceeded maximum size limit",
-                                "message": "Try a more specific query to reduce response size"
-                            })
-                        }
-                    }
-                }
-            }
-            return minimal_response
+        response = {
+            'response': action_response,
+            'messageVersion': message_version
+        }
         
-        logger.info(f"Response: {json.dumps(response)}")
+        logger.info(f"Response prepared")
         return response
+        
     except Exception as e:
-        logger.error(f"Unhandled error in lambda_handler: {str(e)}")
-        # Return a formatted error response that Bedrock can handle
+        logger.error(f"Error in lambda_handler: {str(e)}")
         return {
-            "messageVersion": "1.0",
-            "response": {
-                "actionGroup": event.get('actionGroup', ''),
-                "apiPath": event.get('apiPath', ''),
-                "httpMethod": event.get('httpMethod', ''),
-                "httpStatusCode": 500,
-                "responseBody": {
-                    "application/json": {
-                        "body": json.dumps({
-                            "error": f"Internal error: {str(e)}"
-                        })
-                    }
-                }
-            }
+            'statusCode': 500,
+            'body': f'Internal server error: {str(e)}'
         }
