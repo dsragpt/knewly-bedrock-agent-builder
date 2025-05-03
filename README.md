@@ -1,4 +1,4 @@
-# Bedrock Agent Tester
+# Knewly Bedrock Agent Builder
 
 This repository contains testing frameworks for AWS Bedrock Agents, specifically for:
 - ClinicalTrials.gov API Agent
@@ -7,7 +7,7 @@ This repository contains testing frameworks for AWS Bedrock Agents, specifically
 ## Project Structure
 
 ```
-bedrock-agent-tester/
+knewly-bedrock-agent-builder/
 ├── clinical-tester/         # ClinicalTrials.gov API testing framework
 │   ├── README.md
 │   ├── test_cases.json
@@ -25,8 +25,8 @@ bedrock-agent-tester/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/bedrock-agent-tester.git
-   cd bedrock-agent-tester
+   git clone https://github.com/yourusername/knewly-bedrock-agent-builder.git
+   cd knewly-bedrock-agent-builder
    ```
 
 2. Create and activate a virtual environment:
