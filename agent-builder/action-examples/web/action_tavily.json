@@ -1,0 +1,12 @@
+{
+  "name": "tavily-ai-search",
+  "description": "To retrieve information via the internet or for topics that the LLM does not know about and intense research is needed.",
+  "parameters": {
+    "search_query": {
+      "description": "The search query for the Tavily web search.",
+      "required": "True",
+      "type": "string"
+    }
+  },
+  "requireConfirmation": "DISABLED"
+}

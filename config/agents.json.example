@@ -14,5 +14,13 @@
         "name": "OpenFDA API Agent",
         "description": "Agent for querying OpenFDA API endpoints",
         "version": "1.0.0"
+    },
+    "web": {
+        "agent_id": "YOUR_WEB_AGENT_ID",
+        "agent_alias_id": "YOUR_WEB_AGENT_ALIAS_ID",
+        "region": "us-east-1",
+        "name": "Web Agent",
+        "description": "Agent for handling web-related operations",
+        "version": "1.0.0"
     }
 } 

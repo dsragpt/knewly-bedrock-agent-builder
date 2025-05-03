@@ -1,0 +1,12 @@
+{
+  "name": "google-search",
+  "description": "google-search",
+  "parameters": {
+    "search_query": {
+      "description": "The search query for the Google web search.",
+      "required": "True",
+      "type": "string"
+    }
+  },
+  "requireConfirmation": "DISABLED"
+}

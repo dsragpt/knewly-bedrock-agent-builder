@@ -1,0 +1,45 @@
+{
+  "name": "google-search",
+  "description": "To retrieve information via Google search for topics that need web research.",
+  "parameters": {
+    "search_query": {
+      "description": "The search query for the Google web search.",
+      "required": "True",
+      "type": "string"
+    },
+    "include_metadata": {
+      "description": "Whether to include URL metadata in the response.",
+      "required": "False",
+      "type": "boolean",
+      "default": true
+    },
+    "consolidate_results": {
+      "description": "Whether to consolidate multiple results into a single summary.",
+      "required": "False",
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "response": {
+    "type": "object",
+    "properties": {
+      "summary": {
+        "type": "string",
+        "description": "Consolidated summary of all search results"
+      },
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "title": { "type": "string" },
+            "content": { "type": "string" },
+            "url": { "type": "string" },
+            "score": { "type": "number" }
+          }
+        }
+      }
+    }
+  },
+  "requireConfirmation": "DISABLED"
+}

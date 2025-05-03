@@ -1,0 +1,623 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "OpenFDA API",
+      "version": "1.0.0",
+      "description": "API for interacting with the OpenFDA drug and medical device endpoints"
+    },
+    "paths": {
+      "/drug/event": {
+        "get": {
+          "summary": "Get drug adverse events",
+          "description": "Retrieve adverse event reports for drugs including side effects, product use errors, and product quality problems",
+          "operationId": "getDrugAdverseEvents",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering adverse events (e.g., patient.drug.medicinalproduct:aspirin)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/drug/label": {
+        "get": {
+          "summary": "Get drug labeling information",
+          "description": "Retrieve structured product information for approved drug products",
+          "operationId": "getDrugLabels",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering drug labels (e.g., openfda.brand_name:aspirin)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/drug/ndc": {
+        "get": {
+          "summary": "Get drug NDC directory information",
+          "description": "Retrieve NDC directory containing information on the National Drug Code (NDC)",
+          "operationId": "getDrugNDC",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering NDC data (e.g., brand_name:aspirin)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/drug/enforcement": {
+        "get": {
+          "summary": "Get drug enforcement reports",
+          "description": "Retrieve drug product recall enforcement reports",
+          "operationId": "getDrugEnforcement",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering enforcement data (e.g., product_description:aspirin)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/drug/search": {
+        "post": {
+          "summary": "Search across all drug datasets",
+          "description": "A unified search endpoint that can query any drug dataset by specifying the endpoint type",
+          "operationId": "searchDrugData",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["endpoint", "query"],
+                  "properties": {
+                    "endpoint": {
+                      "type": "string",
+                      "description": "The drug endpoint to search (event, label, enforcement, ndc, drugsfda, shortages)",
+                      "enum": ["event", "label", "enforcement", "ndc", "drugsfda", "shortages"]
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Search query string"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Maximum number of records to return",
+                      "default": 10,
+                      "maximum": 1000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/device/event": {
+        "get": {
+          "summary": "Get medical device adverse events",
+          "description": "Retrieve reports of serious injuries, deaths, malfunctions, and other undesirable effects associated with medical devices",
+          "operationId": "getDeviceAdverseEvents",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering device events (e.g., device.brand_name:catheter)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/device/classification": {
+        "get": {
+          "summary": "Get medical device classification information",
+          "description": "Retrieve medical device names, product codes, medical specialty areas, and their classification",
+          "operationId": "getDeviceClassification",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering device classifications (e.g., device_name:catheter)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/device/510k": {
+        "get": {
+          "summary": "Get medical device 510(k) clearances",
+          "description": "Retrieve information about 510(k) premarket submissions made to FDA to demonstrate device safety and effectiveness",
+          "operationId": "getDevice510k",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering 510(k) clearances (e.g., device_name:catheter)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/device/enforcement": {
+        "get": {
+          "summary": "Get medical device enforcement reports",
+          "description": "Retrieve medical device product recall enforcement reports",
+          "operationId": "getDeviceEnforcement",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "description": "Search query for filtering device enforcement reports (e.g., product_description:catheter)",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "limit",
+              "in": "query",
+              "description": "Maximum number of records to return (max 1000)",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 10,
+                "maximum": 1000
+              }
+            },
+            {
+              "name": "skip",
+              "in": "query",
+              "description": "Number of records to skip",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "default": 0
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/device/search": {
+        "post": {
+          "summary": "Search across all device datasets",
+          "description": "A unified search endpoint that can query any device dataset by specifying the endpoint type",
+          "operationId": "searchDeviceData",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["endpoint", "query"],
+                  "properties": {
+                    "endpoint": {
+                      "type": "string",
+                      "description": "The device endpoint to search (event, classification, 510k, enforcement, pma, registrationlisting, recall)",
+                      "enum": ["event", "classification", "510k", "enforcement", "pma", "registrationlisting", "recall"]
+                    },
+                    "query": {
+                      "type": "string",
+                      "description": "Search query string"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "Maximum number of records to return",
+                      "default": 10,
+                      "maximum": 1000
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Successful response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "meta": {
+                        "type": "object"
+                      },
+                      "results": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {}
+    }
+  }

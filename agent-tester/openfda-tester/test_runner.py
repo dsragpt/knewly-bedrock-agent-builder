@@ -12,7 +12,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class OpenFDATester:
-    def __init__(self, config_path='../config/agents.json'):
+    def __init__(self, config_path='../../config/agents.json'):
         self.config = self._load_config(config_path)
         self.bedrock_client = self._setup_bedrock_client()
         self.test_cases = self._load_test_cases()
