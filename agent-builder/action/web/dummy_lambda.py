@@ -16,7 +16,7 @@ logger.setLevel(log_level)
 
 AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 ACTION_GROUP_NAME = os.environ.get("ACTION_GROUP", "action_group_quick_start_laegh")
-FUNCTION_NAMES = ["tavily-ai-search", "google-search"]
+FUNCTION_NAMES = ["tavily-ai-search"]
 
 
 def is_env_var_set(env_var: str) -> bool:
@@ -41,18 +41,17 @@ def get_from_secretstore_or_env(key: str) -> str:
     return secret
 
 
-SERPER_API_KEY = get_from_secretstore_or_env("SERPER_API_KEY")
 TAVILY_API_KEY = get_from_secretstore_or_env("TAVILY_API_KEY")
 
 
 def extract_search_params(action_group, function, parameters):
     if action_group != ACTION_GROUP_NAME:
         logger.error(f"unexpected name '{action_group}'; expected valid action group name '{ACTION_GROUP_NAME}'")
-        return None, None, None, None
+        return None, None
 
     if function not in FUNCTION_NAMES:
         logger.error(f"unexpected function name '{function}'; valid function names are'{FUNCTION_NAMES}'")
-        return None, None, None, None
+        return None, None
 
     search_query = next(
         (param["value"] for param in parameters if param["name"] == "search_query"),
@@ -64,108 +63,12 @@ def extract_search_params(action_group, function, parameters):
         None,
     )
 
-    include_metadata = next(
-        (param["value"] for param in parameters if param["name"] == "include_metadata"),
-        True,
-    )
+    logger.debug(f"extract_search_params: {search_query=} {target_website=}")
 
-    consolidate_results = next(
-        (param["value"] for param in parameters if param["name"] == "consolidate_results"),
-        False,
-    )
-
-    logger.debug(f"extract_search_params: {search_query=} {target_website=} {include_metadata=} {consolidate_results=}")
-
-    return search_query, target_website, include_metadata, consolidate_results
+    return search_query, target_website
 
 
-def google_search(search_query: str, target_website: str = "", include_metadata: bool = True, consolidate_results: bool = False) -> str:
-    query = search_query
-    if target_website:
-        query += f" site:{target_website}"
-
-    conn = http.client.HTTPSConnection("google.serper.dev")
-    payload = json.dumps({"q": query})
-    headers = {"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"}
-
-    search_type = "search"  # Changed from "news" to "search" for better results
-    conn.request("POST", f"/{search_type}", payload, headers)
-    res = conn.getresponse()
-    data = res.read()
-    
-    try:
-        response_data = json.loads(data.decode("utf-8"))
-        logger.debug(f"response from Google search {response_data=}")
-        
-        # Extract organic results
-        organic_results = response_data.get("organic", [])
-        
-        # Format results with metadata
-        results = [
-            {
-                "title": result.get("title", ""),
-                "content": result.get("snippet", ""),  # Using snippet as content
-                "url": result.get("link", ""),
-                "score": 1.0 - (i * 0.1)  # Simple scoring based on position
-            }
-            for i, result in enumerate(organic_results[:3])  # Get top 3 results
-        ]
-        
-        if consolidate_results:
-            summary = create_consolidated_summary(results)
-            if include_metadata:
-                return json.dumps({
-                    "summary": summary,
-                    "results": results
-                })
-            else:
-                return json.dumps({"TEXT": {"body": summary}})
-        else:
-            if include_metadata:
-                return json.dumps({"results": results})
-            else:
-                return json.dumps({"TEXT": {"body": " ".join(result.get("content", "") for result in results)}})
-    except json.JSONDecodeError as e:
-        logger.error(f"Failed to parse Google search response: {e}")
-        return json.dumps({"error": "Failed to parse search results"})
-    except Exception as e:
-        logger.error(f"Error in Google search: {e}")
-        return json.dumps({"error": f"Search failed: {str(e)}"})
-
-
-def create_consolidated_summary(results):
-    """Create a consolidated summary from multiple search results"""
-    if not results:
-        return "No results found."
-    
-    # Sort results by score in descending order
-    sorted_results = sorted(results, key=lambda x: x.get("score", 0), reverse=True)
-    
-    # Create a summary that includes key points from each result
-    summary_parts = []
-    for i, result in enumerate(sorted_results, 1):
-        title = result.get("title", "Untitled")
-        content = result.get("content", "")
-        url = result.get("url", "")
-        
-        # Take the first few sentences of content
-        content_summary = ". ".join(content.split(". ")[:2]) + "."
-        
-        summary_parts.append(
-            f"Source {i} ({url}): {title}\n"
-            f"Summary: {content_summary}\n"
-        )
-    
-    # Add a final note about sources
-    summary_parts.append(
-        f"\nThis information is compiled from {len(results)} sources. "
-        "Please refer to the individual sources for complete information."
-    )
-    
-    return "\n".join(summary_parts)
-
-
-def tavily_ai_search(search_query: str, target_website: str = "", include_metadata: bool = True, consolidate_results: bool = False) -> str:
+def tavily_ai_search(search_query: str, target_website: str = "") -> str:
     logger.info(f"executing Tavily AI search with {search_query=}")
 
     base_url = "https://api.tavily.com/search"
@@ -183,40 +86,40 @@ def tavily_ai_search(search_query: str, target_website: str = "", include_metada
     }
 
     data = json.dumps(payload).encode("utf-8")
-    request = urllib.request.Request(base_url, data=data, headers=headers)
+    request = urllib.request.Request(base_url, data=data, headers=headers)  # nosec: B310 fixed url we want to open
 
     try:
-        response = urllib.request.urlopen(request)
+        response = urllib.request.urlopen(request)  # nosec: B310 fixed url we want to open
         response_data = json.loads(response.read().decode("utf-8"))
         logger.debug(f"response from Tavily AI search {response_data=}")
         
-        results = [
-            {
-                "title": result.get("title", ""),
-                "content": result.get("content", ""),
-                "url": result.get("url", ""),
-                "score": result.get("score", 0.0)
-            }
-            for result in response_data.get("results", [])
-        ]
+        # Format results with URLs and metadata
+        results = []
+        metadata = {"reference_urls": []}
         
-        if consolidate_results:
-            summary = create_consolidated_summary(results)
-            if include_metadata:
-                return json.dumps({
-                    "summary": summary,
-                    "results": results
-                })
-            else:
-                return json.dumps({"TEXT": {"body": summary}})
-        else:
-            if include_metadata:
-                return json.dumps({"results": results})
-            else:
-                return json.dumps({"TEXT": {"body": " ".join(result.get("content", "") for result in results)}})
+        for result in response_data.get("results", []):
+            title = result.get("title", "")
+            content = result.get("content", "")
+            url = result.get("url", "")
+            results.append(f"{title}\n{content}\nURL: {url}\n")
+            metadata["reference_urls"].append(url)
+        
+        return json.dumps({
+            "content": "\n".join(results),
+            "metadata": metadata
+        })
     except urllib.error.HTTPError as e:
         logger.error(f"failed to retrieve search results from Tavily AI Search, error: {e.code}")
-        return json.dumps({"error": f"Search failed with error code: {e.code}"})
+        return json.dumps({
+            "content": f"Search failed with error code: {e.code}",
+            "metadata": {"reference_urls": []}
+        })
+    except Exception as e:
+        logger.error(f"Error in Tavily search: {e}")
+        return json.dumps({
+            "content": f"Search failed: {str(e)}",
+            "metadata": {"reference_urls": []}
+        })
 
 
 def lambda_handler(event, _):  # type: ignore
@@ -228,27 +131,26 @@ def lambda_handler(event, _):  # type: ignore
 
     logger.info(f"lambda_handler: {action_group=} {function=}")
 
-    search_query, target_website, include_metadata, consolidate_results = extract_search_params(action_group, function, parameters)
+    search_query, target_website = extract_search_params(action_group, function, parameters)
 
-    search_results: str = ""
-    if function == "tavily-ai-search":
-        search_results = tavily_ai_search(search_query, target_website, include_metadata, consolidate_results)
-    elif function == "google-search":
-        search_results = google_search(search_query, target_website, include_metadata, consolidate_results)
+    search_results = tavily_ai_search(search_query, target_website)
+    search_data = json.loads(search_results)
 
-    logger.debug(f"query results {search_results=}")
+    logger.debug(f"query results {search_data=}")
 
-    # Parse the response to ensure it's in the correct format
-    try:
-        response_data = json.loads(search_results)
-        if "results" in response_data or "summary" in response_data:
-            # Structured response with metadata
-            function_response_body = response_data
-        else:
-            # Simple text response
-            function_response_body = {"TEXT": {"body": response_data.get("TEXT", {}).get("body", search_results)}}
-    except json.JSONDecodeError:
-        function_response_body = {"TEXT": {"body": search_results}}
+    # Format the response to include URLs in a structured way
+    formatted_content = f"Search Results for '{search_query}':\n\n"
+    formatted_content += search_data['content']
+    formatted_content += "\n\nReference URLs:\n"
+    for i, url in enumerate(search_data['metadata']['reference_urls'], 1):
+        formatted_content += f"{i}. {url}\n"
+
+    # Prepare the response with URLs included in the body
+    function_response_body = {
+        "TEXT": {
+            "body": formatted_content
+        }
+    }
 
     action_response = {
         "actionGroup": action_group,

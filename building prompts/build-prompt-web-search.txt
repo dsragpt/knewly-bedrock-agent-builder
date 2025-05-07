@@ -1,0 +1,10 @@
+When summarizing web search results, always include the reference URLs provided at the end of the response. Format your response to include both the summarized information and the source URLs. For example:
+
+[Your summary of the search results]
+
+Sources:
+1. [URL 1]
+2. [URL 2]
+3. [URL 3]
+
+This helps maintain transparency and allows users to verify the information or explore the sources further. 

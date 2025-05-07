@@ -7,38 +7,10 @@
         "required": "True",
         "type": "string"
       },
-      "include_metadata": {
-        "description": "Whether to include URL metadata in the response.",
+      "target_website": {
+        "description": "Optional website domain to limit the search results to (e.g., 'example.com').",
         "required": "False",
-        "type": "boolean",
-        "default": true
-      },
-      "consolidate_results": {
-        "description": "Whether to consolidate multiple results into a single summary.",
-        "required": "False",
-        "type": "boolean",
-        "default": false
-      }
-    },
-    "response": {
-      "type": "object",
-      "properties": {
-        "summary": {
-          "type": "string",
-          "description": "Consolidated summary of all search results"
-        },
-        "results": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "title": { "type": "string" },
-              "content": { "type": "string" },
-              "url": { "type": "string" },
-              "score": { "type": "number" }
-            }
-          }
-        }
+        "type": "string"
       }
     },
     "requireConfirmation": "DISABLED"

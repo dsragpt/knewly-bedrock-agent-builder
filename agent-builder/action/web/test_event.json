@@ -1,0 +1,15 @@
+{
+    "actionGroup": "action_group_quick_start_laegh",
+    "function": "tavily-ai-search",
+    "parameters": [
+        {
+            "name": "search_query",
+            "value": "What is AWS Bedrock?"
+        },
+        {
+            "name": "target_website",
+            "value": "aws.amazon.com"
+        }
+    ],
+    "messageVersion": "1.0"
+} 
