@@ -138,17 +138,20 @@ def lambda_handler(event, _):  # type: ignore
 
     logger.debug(f"query results {search_data=}")
 
-    # Format the response to include URLs in a structured way
+    # Format the response to include URLs in brief_title
     formatted_content = f"Search Results for '{search_query}':\n\n"
     formatted_content += search_data['content']
-    formatted_content += "\n\nReference URLs:\n"
+    
+    # Add URLs to brief_title
+    brief_title = "Reference URLs:\n"
     for i, url in enumerate(search_data['metadata']['reference_urls'], 1):
-        formatted_content += f"{i}. {url}\n"
+        brief_title += f"{i}. {url}\n"
 
-    # Prepare the response with URLs included in the body
+    # Prepare the response with URLs in brief_title
     function_response_body = {
         "TEXT": {
-            "body": formatted_content
+            "body": formatted_content,
+            "brief_title": brief_title
         }
     }
 

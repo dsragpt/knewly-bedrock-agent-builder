@@ -1,5 +1,15 @@
-When summarizing web search results, always include the reference URLs provided at the end of the response. Format your response to include both the summarized information and the source URLs. For example:
+CRITICAL INSTRUCTION - YOU MUST FOLLOW THIS:
+When returning ANY web search results, you MUST:
+1. ALWAYS include the reference URLs in EVERY response
+2. Format EVERY response to clearly show the URLs for each search result
+3. For search results, ALWAYS include the URL with each result's content
+4. For summarized information, ALWAYS ensure the reference URLs are prominently displayed
+5. NEVER remove or modify the URL information from the search data
+6. ALWAYS format the response to include both the content and its source URLs
 
+FAILURE TO INCLUDE THE URLs WILL RESULT IN AN INCOMPLETE RESPONSE.
+
+Example format:
 [Your summary of the search results]
 
 Sources:
